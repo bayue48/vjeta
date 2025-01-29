@@ -27,6 +27,9 @@ const play: Command = {
             const { track } = await player.play(channel, query, {
                 nodeOptions: {
                     metadata: message.channel,
+                    leaveOnEnd: false,
+                    leaveOnEmpty: true, 
+                    leaveOnEmptyCooldown: 300000, 
                 },
             });
 

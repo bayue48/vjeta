@@ -1,19 +1,27 @@
 import { Client } from "discord.js";
 import { Player, GuildQueueEvent } from "discord-player";
 import { YoutubeiExtractor } from "discord-player-youtubei"
+import { DefaultExtractors } from "@discord-player/extractor";
 
 module.exports = (client: Client) => {
     // entrypoint for discord-player based application
     const player = new Player(client);
 
-    player.extractors.register(YoutubeiExtractor, { authentication: process.env.YOUTUBE_TOKEN })
+    player.extractors.register(YoutubeiExtractor, {});
+    player.extractors.loadMulti(DefaultExtractors);
 
     console.log("deep || ", player.scanDeps());
 
     // Emitted when the player starts to play a song
     player.events.on(GuildQueueEvent.PlayerStart, async (queue, track) => {
-        const { channel } = queue.metadata;
-        await channel.send(`Started playing: **${track.title}**`);
+        await queue.metadata.send(`Started playing: **${track.title}**`);
+    });
+
+    console.log("deep || ", player.scanDeps());
+
+    // Emitted when the player starts to play a song
+    player.events.on(GuildQueueEvent.PlayerStart, async (queue, track) => {
+        await queue.metadata.send(`Started playing: **${track.title}**`);
     });
 
     player.events.on(GuildQueueEvent.AudioTrackAdd, (queue, track) => {
