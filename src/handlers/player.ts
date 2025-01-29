@@ -1,6 +1,5 @@
 import { Client } from "discord.js";
 import { Player, GuildQueueEvent } from "discord-player";
-import { SoundCloudExtractor } from "@discord-player/extractor";
 import { YoutubeiExtractor } from "discord-player-youtubei"
 
 module.exports = (client: Client) => {
