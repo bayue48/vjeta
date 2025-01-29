@@ -1,6 +1,6 @@
 import { EmbedBuilder, PermissionFlagsBits } from "discord.js";
-import { getThemeColor } from "../functions";
-import { Command } from "../types";
+import { getThemeColor } from "../../functions";
+import { Command } from "../../types";
 
 const ping: Command = {
   enable: true,

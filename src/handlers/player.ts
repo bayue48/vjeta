@@ -1,26 +1,27 @@
 import { Client } from "discord.js";
 import { Player, GuildQueueEvent } from "discord-player";
-import { DefaultExtractors } from "@discord-player/extractor";
+import { SoundCloudExtractor } from "@discord-player/extractor";
+import { YoutubeiExtractor } from "discord-player-youtubei"
 
 module.exports = (client: Client) => {
     // entrypoint for discord-player based application
     const player = new Player(client);
 
-    // load all the default extractors
-    player.extractors.loadMulti(DefaultExtractors);
+    player.extractors.register(YoutubeiExtractor, { authentication: process.env.YOUTUBE_TOKEN })
 
-    console.log(player.scanDeps()); 
+    console.log("deep || ", player.scanDeps());
 
-    player.events.on(GuildQueueEvent.PlayerStart, (queue, track) => {
-        // Emitted when the player starts to play a song
-        queue.metadata.send(`Started playing: **${track.title}**`);
+    // Emitted when the player starts to play a song
+    player.events.on(GuildQueueEvent.PlayerStart, async (queue, track) => {
+        const { channel } = queue.metadata;
+        await channel.send(`Started playing: **${track.title}**`);
     });
 
     player.events.on(GuildQueueEvent.AudioTrackAdd, (queue, track) => {
         // Emitted when the player adds a single song to its queue
         queue.metadata.send(`Track **${track.title}** queued`);
     });
-    
+
     player.events.on(GuildQueueEvent.AudioTracksAdd, (queue, track) => {
         // Emitted when the player adds multiple songs to its queue
         queue.metadata.send(`Multiple Track's queued`);

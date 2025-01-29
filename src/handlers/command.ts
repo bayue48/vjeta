@@ -1,6 +1,6 @@
 import { Client, Routes, SlashCommandBuilder } from "discord.js";
 import { REST } from "@discordjs/rest";
-import { readdirSync } from "fs";
+import { readdirSync, statSync } from "fs";
 import { join } from "path";
 import { color, fileType } from "../functions";
 import { Command, SlashCommand } from "../types";
@@ -20,12 +20,16 @@ module.exports = (client: Client) => {
     client.slashCommands.set(command.command.name, command);
   });
 
-  readdirSync(commandsDir).forEach((file) => {
-    if (!file.endsWith(fileType(process.env.ENV))) return;
-    let command: Command = require(`${commandsDir}/${file}`).default;
-    if (!command || !command.enable) return;
-    commands.push(command);
-    client.commands.set(command.name, command);
+  readdirSync(commandsDir).forEach((moduleDir) => {
+    const modulePath = join(commandsDir, moduleDir);
+    if (!statSync(modulePath).isDirectory()) return;
+    readdirSync(modulePath).forEach((file) => {
+      if (!file.endsWith(fileType(process.env.ENV))) return;
+      let command: Command = require(`${modulePath}/${file}`).default;
+      if (!command || !command.enable) return;
+      commands.push(command);
+      client.commands.set(command.name, command);
+    });
   });
 
   const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);

@@ -1,5 +1,5 @@
 import { PermissionFlagsBits } from "discord.js";
-import { Command } from "../types";
+import { Command } from "../../types";
 
 const greet: Command = {
   name: "greet",

@@ -57,6 +57,7 @@ declare global {
       MONGO_URI: string;
       MONGO_DATABASE_NAME: string;
       ENV: string;
+      YOUTUBE_TOKEN: string;
     }
   }
 }
