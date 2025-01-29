@@ -9,22 +9,24 @@ import {
 import mongoose from "mongoose";
 
 export interface SlashCommand {
+  description?: string;
   enable: boolean;
   command: SlashCommandBuilder | any;
+  cooldowns?: number; // in seconds
+  botPermissions: Array<PermissionResolvable>;
   execute: (interaction: CommandInteraction) => void;
   autocomplete?: (interaction: AutocompleteInteraction) => void;
-  cooldown?: number; // in seconds
-  botPermissions: Array<PermissionResolvable>;
 }
 
 export interface Command {
   name: string;
+  aliases?: Array<string>;
+  description?: string;
   enable: boolean;
+  cooldowns?: number;
+  permissions?: Array<PermissionResolvable>;
+  botPermissions?: Array<PermissionResolvable>;
   execute: (message: Message, args: Array<string>) => void;
-  permissions: Array<PermissionResolvable>;
-  botPermissions: Array<PermissionResolvable>;
-  aliases: Array<string>;
-  cooldown?: number;
 }
 
 interface GuildOptions {
@@ -50,9 +52,11 @@ declare global {
     interface ProcessEnv {
       TOKEN: string;
       CLIENT_ID: string;
+      GUILD_ID: string;
       PREFIX: string;
       MONGO_URI: string;
       MONGO_DATABASE_NAME: string;
+      ENV: string;
     }
   }
 }

@@ -64,5 +64,5 @@ Please note that all contributors are expected to follow our code of conduct. By
 
 </br>
 
-| ¡Please leave a ⭐ to help the project|
-|----------------------------------------------|
+| ¡Please leave a ⭐ to help the project |
+| ------------------------------------- |

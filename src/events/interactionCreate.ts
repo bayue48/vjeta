@@ -1,24 +1,24 @@
-import { Interaction, EmbedBuilder } from "discord.js";
+import { Interaction, EmbedBuilder, Events } from "discord.js";
 import { checkBotPermissions, getThemeColor } from "../functions";
 import { BotEvent } from "../types";
 
 const event: BotEvent = {
   enable: true,
-  name: "interactionCreate",
+  name: Events.InteractionCreate,
   execute: (interaction: Interaction) => {
     if (interaction.isChatInputCommand()) {
       let command = interaction.client.slashCommands.get(
         interaction.commandName
       );
-      let cooldown = interaction.client.cooldowns.get(
+      let cooldowns = interaction.client.cooldowns.get(
         `${interaction.commandName}-${interaction.user.username}`
       );
       if (!command) return;
-      if (command.cooldown && cooldown) {
-        if (Date.now() < cooldown) {
+      if (command.cooldowns && cooldowns) {
+        if (Date.now() < cooldowns) {
           interaction.reply(
             `You have to wait ${Math.floor(
-              Math.abs(Date.now() - cooldown) / 1000
+              Math.abs(Date.now() - cooldowns) / 1000
             )} second(s) to use this command again.`
           );
           setTimeout(() => interaction.deleteReply(), 5000);
@@ -26,33 +26,35 @@ const event: BotEvent = {
         }
         interaction.client.cooldowns.set(
           `${interaction.commandName}-${interaction.user.username}`,
-          Date.now() + command.cooldown * 1000
+          Date.now() + command.cooldowns * 1000
         );
         setTimeout(() => {
           interaction.client.cooldowns.delete(
             `${interaction.commandName}-${interaction.user.username}`
           );
-        }, command.cooldown * 1000);
-      } else if (command.cooldown && !cooldown) {
+        }, command.cooldowns * 1000);
+      } else if (command.cooldowns && !cooldowns) {
         interaction.client.cooldowns.set(
           `${interaction.commandName}-${interaction.user.username}`,
-          Date.now() + command.cooldown * 1000
+          Date.now() + command.cooldowns * 1000
         );
       }
       let neededBotPermissions = checkBotPermissions(interaction, command.botPermissions)
-      if(neededBotPermissions !== null){
-        return interaction.reply({content: `❌ | **Ops! I need these permissions: ${neededBotPermissions?.join(", ")} To be able to execute the command**`});;
+      if (neededBotPermissions !== null) {
+        return interaction.reply({ content: `❌ | **Ops! I need these permissions: ${neededBotPermissions?.join(", ")} To be able to execute the command**` });;
       }
 
-      try{
-            command.execute(interaction);
-      } catch(e){
-        interaction.reply({ embeds: [
-          new EmbedBuilder()
-          .setColor(getThemeColor('mainColor'))
-          .setTimestamp()
-          .setDescription(`❌ | **Error Al Ejecutar El Comando`)
-        ]});
+      try {
+        command.execute(interaction);
+      } catch (e) {
+        interaction.reply({
+          embeds: [
+            new EmbedBuilder()
+              .setColor(getThemeColor('mainColor'))
+              .setTimestamp()
+              .setDescription(`❌ | **Ops! Something went wrong while executing the command**`)
+          ]
+        });
         console.log(e);
         return;
       }

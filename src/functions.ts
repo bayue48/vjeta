@@ -1,22 +1,20 @@
 import chalk from "chalk"
 import {
-    Guild, 
-    GuildMember, 
-    PermissionFlagsBits, 
+    Guild,
+    GuildMember,
+    PermissionFlagsBits,
     PermissionResolvable,
-    TextChannel, 
- } from "discord.js"
-import GuildDB from "./schemas/Guild"
+    TextChannel,
+} from "discord.js"
+import GuildDB from "./schemas/guild"
 import { GuildOption } from "./types"
 import mongoose from "mongoose";
-import config from "./config";
-import { ActivityType } from 'discord.js';
 
 type colorType = "mainColor" | "secColor" | "errorColor"
 const themeColors = {
-    mainColor: config.mainColor,   
-    secColor: config.secColor,
-    errorColor: config.errorColor
+    mainColor: "#FBC630",
+    secColor: "#FE6E10",
+    errorColor: "#FF2222"
 };
 
 export const getThemeColor = (color: colorType) => Number(`0x${themeColors[color].substring(1)}`)
@@ -37,8 +35,8 @@ export const checkPermissions = (member: GuildMember, permissions: PermissionRes
     })
 }
 
-export const checkBotPermissions = (message: any , permissions: PermissionResolvable[]) => {
-    if(!message.channel?.permissionsFor(message.guild?.members.me).has('SendMessages')) return;
+export const checkBotPermissions = (message: any, permissions: PermissionResolvable[]) => {
+    if (!message.channel?.permissionsFor(message.guild?.members.me).has('SendMessages')) return;
     let neededPermissions: PermissionResolvable[] = []
     permissions.forEach(permission => {
         if (!message.guild?.members.me?.permissions.has(permissions)) neededPermissions.push(permission)
@@ -48,7 +46,7 @@ export const checkBotPermissions = (message: any , permissions: PermissionResolv
         if (typeof p === "string") return `\`${p.split(/(?=[A-Z])/).join(" ")}\``
         else return Object.keys(PermissionFlagsBits).find(k => Object(PermissionFlagsBits)[k] === p)?.split(/(?=[A-Z])/).join(" ")
     })
-    
+
 }
 
 export const sendTimedMessage = (message: string, channel: TextChannel, duration: number) => {
@@ -72,21 +70,7 @@ export const setGuildOption = async (guild: Guild, option: GuildOption, value: a
     foundGuild.save()
 }
 
-export const getType = (type: ActivityType | String) => {
-    switch (type) {
-      case "COMPETING":
-        return ActivityType.Competing;
-
-      case "LISTENING":
-        return ActivityType.Listening;
-
-      case "PLAYING":
-        return ActivityType.Playing;
-
-      case "WATCHING":
-        return ActivityType.Watching;
-
-      case "STREAMING":
-        return ActivityType.Streaming;
-    }
-  };
+export const fileType = (env: string) => {
+    if (env === "dev") return ".ts"
+    else return ".js"
+};

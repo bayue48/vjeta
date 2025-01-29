@@ -1,30 +1,29 @@
-import { EmbedBuilder } from "discord.js";
+import { EmbedBuilder, PermissionFlagsBits } from "discord.js";
 import { getThemeColor } from "../functions";
 import { Command } from "../types";
 
-const command: Command = {
+const ping: Command = {
   enable: true,
   name: "ping",
-  execute: async(message, args) => {
+  execute: async (message, args) => {
     const ping = message.client.ws.ping;
     let state;
-    if(ping > 500) state = "🔴";
-    else if(ping > 200) state = "🟡";
+    if (ping > 500) state = "🔴";
+    else if (ping > 200) state = "🟡";
     else state = "🟢";
-    
-    message.reply({ embeds: [
-      new EmbedBuilder()
-      .setColor(getThemeColor('mainColor'))
-      // .setTitle("🏓 | Pong!")
-      .setTimestamp()
-      .addFields(
-        { name: "🏓 | Pong!", value: `\`\`\`yml\n${state} | ${ping}ms\`\`\``},
-      )
-    ]});
+
+    message.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setColor(getThemeColor('mainColor'))
+          .setTimestamp()
+          .addFields(
+            { name: "🏓 | Pong!", value: `\`\`\`yml\n${state} | ${ping}ms\`\`\`` },
+          )
+      ]
+    });
   },
-  permissions: ["ViewChannel",'SendMessages'],
-  botPermissions: ['EmbedLinks'],
-  aliases: [],
+  permissions: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages],
 };
 
-export default command;
+export default ping;

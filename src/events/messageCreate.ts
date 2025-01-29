@@ -1,4 +1,4 @@
-import { ChannelType, Message, EmbedBuilder } from "discord.js";
+import { ChannelType, Message, EmbedBuilder, Events } from "discord.js";
 import {
   checkBotPermissions,
   checkPermissions,
@@ -8,11 +8,11 @@ import {
 } from "../functions";
 import { BotEvent } from "../types";
 import mongoose from "mongoose";
-
+import { useMainPlayer } from "discord-player";
 
 const event: BotEvent = {
   enable: true,
-  name: "messageCreate",
+  name: Events.MessageCreate,
   execute: async (message: Message) => {
     if (!message.member || message.member.user.bot) return;
     if (!message.guild) return;
@@ -21,13 +21,13 @@ const event: BotEvent = {
       let guildPrefix = await getGuildOption(message.guild, "prefix");
       if (guildPrefix) prefix = guildPrefix;
     }
-          // check bot mention
+    // check bot mention
     const mention = new RegExp(`^<@!?${message.guild.members.me?.id}>( |)$`);
-      if (message.content.match(mention)) {
-    const embed= new EmbedBuilder()
+    if (message.content.match(mention)) {
+      const embed = new EmbedBuilder()
         .setColor(getThemeColor('mainColor'))
         .setDescription(`Hey My Prefix is: \`${prefix}\``)
-            return message.reply({ embeds: [embed]})
+      return message.reply({ embeds: [embed] })
     }
 
     if (!message.content.startsWith(prefix)) return;
@@ -35,10 +35,14 @@ const event: BotEvent = {
 
     let args = message.content.substring(prefix.length).split(" ");
     let command = message.client.commands.get(args[0]);
+    const player = useMainPlayer();
+
+    // Create a context with the guild information
+    const context = { guild: message.guild };
 
     if (!command) {
       let commandFromAlias = message.client.commands.find((command) =>
-        command.aliases.includes(args[0])
+        command.aliases?.includes(args[0])
       );
       if (commandFromAlias) command = commandFromAlias;
       else return;
@@ -49,7 +53,7 @@ const event: BotEvent = {
     );
     let neededPermissions = checkPermissions(
       message.member,
-      command.permissions
+      command.permissions ?? []
     );
     if (neededPermissions !== null)
       return sendTimedMessage(
@@ -58,12 +62,12 @@ const event: BotEvent = {
         5000
       );
 
-    let neededBotPermissions = checkBotPermissions(message, command.botPermissions)
-    if(neededBotPermissions !== null){
-      return message.reply({content: `❌ | **Ops! I need these permissions: ${neededBotPermissions?.join(", ")} To be able to execute the command**`});;
+    let neededBotPermissions = checkBotPermissions(message, command.botPermissions ?? []);
+    if (neededBotPermissions !== null) {
+      return message.reply({ content: `❌ | **Ops! I need these permissions: ${neededBotPermissions?.join(", ")} To be able to execute the command**` });;
     }
 
-    if (command.cooldown && cooldown) {
+    if (command.cooldowns && cooldown) {
       if (Date.now() < cooldown) {
         sendTimedMessage(
           `You have to wait ${Math.floor(
@@ -76,30 +80,32 @@ const event: BotEvent = {
       }
       message.client.cooldowns.set(
         `${command.name}-${message.member.user.username}`,
-        Date.now() + command.cooldown * 1000
+        Date.now() + command.cooldowns * 1000
       );
       setTimeout(() => {
         message.client.cooldowns.delete(
           `${command?.name}-${message.member?.user.username}`
         );
-      }, command.cooldown * 1000);
-    } else if (command.cooldown && !cooldown) {
+      }, command.cooldowns * 1000);
+    } else if (command.cooldowns && !cooldown) {
       message.client.cooldowns.set(
         `${command.name}-${message.member.user.username}`,
-        Date.now() + command.cooldown * 1000
+        Date.now() + command.cooldowns * 1000
       );
     }
 
     try {
-      command.execute(message, args);
-    } catch(e){
+      player.context.provide(context, () => command.execute(message, args));
+    } catch (e) {
       console.log(e)
-      return message.reply({ embeds: [
-        new EmbedBuilder()
-        .setColor(getThemeColor('mainColor'))
-        .setTimestamp()
-        .setDescription(`❌ | **Error Al Ejecutar El Comando`)
-      ]});
+      return message.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor(getThemeColor('mainColor'))
+            .setTimestamp()
+            .setDescription(`❌ | **Ops! Something went wrong while executing the command**`),
+        ]
+      });
     }
   },
 };

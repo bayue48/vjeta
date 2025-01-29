@@ -1,21 +1,20 @@
 import { PermissionFlagsBits } from "discord.js";
 import { Command } from "../types";
 
-const command: Command = {
-  enable: true,
+const greet: Command = {
   name: "greet",
-  execute: (message, args) => {
+  aliases: ["sayhello", "hello", "hey", "hola"],
+  description: "Greet someone",
+  enable: true,
+  cooldowns: 10,
+  permissions: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages],
+  execute: (message) => {
     let toGreet = message.mentions.members?.first();
     message.reply(
-      `Hello there ${
-        toGreet ? toGreet.user.username : message.member?.user.username
+      `Hello there ${toGreet ? toGreet.user.username : message.member?.user.username
       }!`
     );
   },
-  cooldown: 10,
-  aliases: ["sayhello", "hello", "hey","hola"],
-  permissions: [PermissionFlagsBits.ManageNicknames], // to test
-  botPermissions: ['EmbedLinks'],
 };
 
-export default command;
+export default greet;

@@ -1,14 +1,14 @@
 import { Client } from "discord.js";
 import { readdirSync } from "fs";
 import { join } from "path";
-import { color } from "../functions";
+import { color, fileType } from "../functions";
 import { BotEvent } from "../types";
 
 module.exports = (client: Client) => {
   let eventsDir = join(__dirname, "../events");
 
   readdirSync(eventsDir).forEach((file) => {
-    if (!file.endsWith(".js")) return;
+    if (!file.endsWith(fileType(process.env.ENV))) return;
     let event: BotEvent = require(`${eventsDir}/${file}`).default;
     if (!event.enable) return;
     event.once

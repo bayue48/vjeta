@@ -1,18 +1,23 @@
-import { Client, GatewayIntentBits, Collection, PresenceUpdateStatus, Partials,} from "discord.js";
-import CG from './config';
-import { getType } from "./functions";
+import { Client, GatewayIntentBits, Collection, PresenceUpdateStatus, Partials, ActivityType, } from "discord.js";
+import { Command, SlashCommand } from "./types";
+import { config } from "dotenv";
+import { readdirSync } from "fs";
+import { join } from "path";
+
+config()
+
 const { Guilds, MessageContent, GuildMessages, GuildMembers, GuildVoiceStates } = GatewayIntentBits
 const client = new Client({
-    presence:{ 
+    presence: {
         activities: [
             {
-                name: CG.PRESENCE.text,
-                type: getType(CG.PRESENCE.type),
+                name: "ZETA",
+                type: ActivityType.Watching,
             }
         ],
         status: PresenceUpdateStatus.Online,
     },
-    intents:[
+    intents: [
         Guilds,
         MessageContent,
         GuildMessages,
@@ -20,13 +25,8 @@ const client = new Client({
         GuildVoiceStates
     ],
     partials: [Partials.User, Partials.Message, Partials.Reaction],
-    allowedMentions: { repliedUser: false}
+    allowedMentions: { repliedUser: false }
 })
-import { Command, SlashCommand } from "./types";
-import { config } from "dotenv";
-import { readdirSync } from "fs";
-import { join } from "path";
-config()
 
 client.slashCommands = new Collection<string, SlashCommand>()
 client.commands = new Collection<string, Command>()
@@ -38,9 +38,3 @@ readdirSync(handlersDir).forEach(handler => {
 })
 
 client.login(process.env.TOKEN)
-/*
-╔═════════════════════════════════════════════════════╗
-║    || - ||   Developed by NoBody#9666   || - ||     ║
-║    ----------| discord.gg/FMbXwGPJGm |---------     ║
-╚═════════════════════════════════════════════════════╝
-*/

@@ -1,11 +1,11 @@
-import { Guild, EmbedBuilder,WebhookClient } from "discord.js";
+import { Guild, EmbedBuilder,WebhookClient, Events } from "discord.js";
 import { getThemeColor } from "../functions";
-import GuildModel from "../schemas/Guild";
+import GuildModel from "../schemas/guild";
 import { BotEvent } from "../types";
 
 const event: BotEvent = {
   enable: true,
-  name: "guildCreate",
+  name: Events.GuildCreate,
   execute: (guild: Guild) => {
     let newGuild = new GuildModel({
       guildID: guild.id,

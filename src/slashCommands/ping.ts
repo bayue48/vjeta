@@ -28,7 +28,7 @@ const command: SlashCommand = {
       )
     ]});
   },
-  cooldown: 10,
+  cooldowns: 10,
   botPermissions: ['SendMessages', 'EmbedLinks'],
 };
 

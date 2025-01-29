@@ -2,7 +2,7 @@ import { Client, Routes, SlashCommandBuilder } from "discord.js";
 import { REST } from "@discordjs/rest";
 import { readdirSync } from "fs";
 import { join } from "path";
-import { color } from "../functions";
+import { color, fileType } from "../functions";
 import { Command, SlashCommand } from "../types";
 
 module.exports = (client: Client) => {
@@ -13,17 +13,17 @@ module.exports = (client: Client) => {
   let commandsDir = join(__dirname, "../commands");
 
   readdirSync(slashCommandsDir).forEach((file) => {
-    if (!file.endsWith(".js")) return;
+    if (!file.endsWith(fileType(process.env.ENV))) return;
     let command: SlashCommand = require(`${slashCommandsDir}/${file}`).default;
-    if (!command.enable) return;
+    if (!command || !command.enable) return;
     slashCommands.push(command.command);
     client.slashCommands.set(command.command.name, command);
   });
 
   readdirSync(commandsDir).forEach((file) => {
-    if (!file.endsWith(".js")) return;
+    if (!file.endsWith(fileType(process.env.ENV))) return;
     let command: Command = require(`${commandsDir}/${file}`).default;
-    if (!command.enable) return;
+    if (!command || !command.enable) return;
     commands.push(command);
     client.commands.set(command.name, command);
   });
@@ -31,7 +31,7 @@ module.exports = (client: Client) => {
   const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
   rest
-    .put(Routes.applicationCommands(process.env.CLIENT_ID), {
+    .put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), {
       body: slashCommands.map((command) => command.toJSON()),
     })
     .then((data: any) => {
