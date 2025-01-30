@@ -1,4 +1,4 @@
-import { Guild, EmbedBuilder,WebhookClient, Events } from "discord.js";
+import { Guild, EmbedBuilder, WebhookClient, Events } from "discord.js";
 import { getThemeColor } from "../functions";
 import GuildModel from "../schemas/guild";
 import { BotEvent } from "../types";
@@ -15,41 +15,41 @@ const event: BotEvent = {
     newGuild.save();
 
     const joinLeaveWebhookUrl = process.env.joinLeaveWebhook
-    if(!joinLeaveWebhookUrl)return
+    if (!joinLeaveWebhookUrl) return
     const joinLeaveWebhook = new WebhookClient({
       url: joinLeaveWebhookUrl
     })
     const embed = new EmbedBuilder()
-    .setTitle("New Server")
-    .setThumbnail(guild.iconURL())
-    .setColor(getThemeColor('mainColor'))
-    .addFields(
-      {
-        name: "Guild Name",
-        value: guild.name,
-        inline: false,
-      },
-      {
-        name: "ID",
-        value: guild.id,
-        inline: false,
-      },
-      {
-        name: "OwnerId",
-        value: `[\`${guild.ownerId}\`]`,
-        inline: false,
-      },
-      {
-        name: "Members",
-        value: `\`\`\`yaml\n${guild.memberCount}\`\`\``,
-        inline: false,
-      }
-    )
+      .setTitle("New Server")
+      .setThumbnail(guild.iconURL())
+      .setColor(getThemeColor('mainColor'))
+      .addFields(
+        {
+          name: "Guild Name",
+          value: guild.name,
+          inline: false,
+        },
+        {
+          name: "ID",
+          value: guild.id,
+          inline: false,
+        },
+        {
+          name: "OwnerId",
+          value: `[\`${guild.ownerId}\`]`,
+          inline: false,
+        },
+        {
+          name: "Members",
+          value: `\`\`\`yaml\n${guild.memberCount}\`\`\``,
+          inline: false,
+        }
+      )
 
     joinLeaveWebhook.send({
-    username: "NEW SERVER",
-    embeds: [embed],
-  });
+      username: "NEW SERVER",
+      embeds: [embed],
+    });
   },
 };
 

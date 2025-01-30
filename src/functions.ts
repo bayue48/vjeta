@@ -65,7 +65,15 @@ export const getGuildOption = async (guild: Guild, option: GuildOption) => {
 export const setGuildOption = async (guild: Guild, option: GuildOption, value: any) => {
     if (mongoose.connection.readyState === 0) throw new Error("[❌] Database not connected.")
     let foundGuild = await GuildDB.findOne({ guildID: guild.id })
-    if (!foundGuild) return null;
+    if (!foundGuild) {
+        let newGuild = new GuildDB({
+            guildID: guild.id,
+            options: { [option]: value },
+            joinedAt: Date.now(),
+        });
+        newGuild.save()
+        return null;
+    }
     foundGuild.options[option] = value
     foundGuild.save()
 }

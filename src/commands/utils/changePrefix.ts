@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "discord.js";
-import { getThemeColor, setGuildOption } from "../functions";
-import { Command } from "../types";
+import { getThemeColor, setGuildOption } from "../../functions";
+import { Command } from "../../types";
 
 const command: Command = {
     enable: true,
@@ -19,7 +19,7 @@ const command: Command = {
             ]
         });
     },
-    permissions: ["Administrator"],
+    // permissions: ["Administrator"],
     botPermissions: ['EmbedLinks'],
     aliases: [],
 };
