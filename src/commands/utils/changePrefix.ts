@@ -19,7 +19,7 @@ const command: Command = {
             ]
         });
     },
-    // permissions: ["Administrator"],
+    permissions: ["Administrator"],
     botPermissions: ['EmbedLinks'],
     aliases: [],
 };

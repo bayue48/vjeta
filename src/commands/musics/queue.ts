@@ -13,6 +13,7 @@ const queue: Command = {
         const upcomingTracks = queue.tracks
 
         const build = [
+            `**Queue Size:** ${queue.tracks.size}`,
             `**Now Playing:** ${currentTrack?.title} - ${currentTrack?.author}`,
             '',
             '**Upcoming Tracks:**',

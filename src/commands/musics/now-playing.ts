@@ -1,4 +1,4 @@
-import { useQueue } from 'discord-player';
+import { usePlayer, useQueue } from 'discord-player';
 import { Command } from '../../types';
 
 const nowPlaying: Command = {
@@ -12,7 +12,11 @@ const nowPlaying: Command = {
         const track = queue?.currentTrack;
         if (!track) return message.reply('No song is currently playing!');
 
-        return message.reply(`Now playing: **${track?.title}**`);
+        const player = usePlayer();
+        const progressBar = player?.createProgressBar();
+        const timestamp = player?.getTimestamp();
+
+        return message.reply(`Now playing: **${track?.title}** \n ${progressBar} \n Progress: ${timestamp?.progress}%`);
     }
 }
 

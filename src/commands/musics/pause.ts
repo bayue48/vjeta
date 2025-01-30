@@ -11,7 +11,6 @@ const pause: Command = {
 
         if (!queue.isPlaying()) return message.reply('No song is currently playing!');
 
-        // Get the queue's timeline
         const timeline = useTimeline();
         if (!timeline) return message.reply('No song is currently playing!');
 
