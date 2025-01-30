@@ -15,18 +15,20 @@ const command: SlashCommand = {
   execute: (interaction) => {
     const ping = interaction.client.ws.ping;
     let state;
-    if(ping > 500) state = "🔴";
-    else if(ping > 200) state = "🟡";
+    if (ping > 500) state = "🔴";
+    else if (ping > 200) state = "🟡";
     else state = "🟢";
-    
-    interaction.reply({ embeds: [
-      new EmbedBuilder()
-      .setColor(getThemeColor('mainColor'))
-      .setTimestamp()
-      .addFields(
-        { name: "🏓 | Pong!", value: `\`\`\`yml\n${state} | ${ping}ms\`\`\``},
-      )
-    ]});
+
+    interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setColor(getThemeColor('mainColor'))
+          .setTimestamp()
+          .addFields(
+            { name: "🏓 | Pong!", value: `\`\`\`yml\n${state} | ${ping}ms\`\`\`` },
+          )
+      ]
+    });
   },
   cooldowns: 10,
   botPermissions: ['SendMessages', 'EmbedLinks'],

@@ -16,7 +16,6 @@ const loop: Command = {
         // Autoplay	3	    Play related songs automatically based on your existing queue
 
         const loopMode = queue.repeatMode;
-
         loopMode === 0 ? queue.setRepeatMode(1) : loopMode === 1 ? queue.setRepeatMode(2) : loopMode === 2 ? queue.setRepeatMode(3) : queue.setRepeatMode(0);
 
         return message.reply(`Loop mode is ${loopMode}`);

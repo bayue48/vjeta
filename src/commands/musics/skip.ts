@@ -8,11 +8,9 @@ const skip: Command = {
     execute: async (message) => {
         const queue = useQueue();
         if (!queue) return message.reply('This server has no queue!');
-
         if (!queue.isPlaying()) return message.reply('No song is currently playing!');
 
         queue.node.skip();
-
         return message.reply('Skipped the current song!');
     }
 }

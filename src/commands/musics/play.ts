@@ -12,7 +12,6 @@ const play: Command = {
     execute: async (message, args) => {
         const player = useMainPlayer();
         const channel = message.member?.voice.channel;
-
         if (!channel) return message.reply('You need to be in a voice channel to use this command!');
 
         // Check if the bot is already playing in a different voice channel

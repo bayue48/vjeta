@@ -22,7 +22,6 @@ const queue: Command = {
             ),
         ].join('\n');
 
-        // Send the message
         return message.reply(build);
     }
 }

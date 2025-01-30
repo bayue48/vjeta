@@ -4,7 +4,6 @@ import { YoutubeiExtractor } from "discord-player-youtubei"
 import { DefaultExtractors } from "@discord-player/extractor";
 
 module.exports = (client: Client) => {
-    // entrypoint for discord-player based application
     const player = new Player(client);
 
     player.extractors.register(YoutubeiExtractor, {});
@@ -12,56 +11,49 @@ module.exports = (client: Client) => {
 
     console.log("deep || ", player.scanDeps());
 
-    // Emitted when the player starts to play a song
     player.events.on(GuildQueueEvent.PlayerStart, async (queue, track) => {
+        // Emitted when the player starts to play a song
         await queue.metadata.send(`Started playing: **${track.title}**`);
     });
 
-    console.log("deep || ", player.scanDeps());
-
-    // Emitted when the player starts to play a song
-    player.events.on(GuildQueueEvent.PlayerStart, async (queue, track) => {
-        await queue.metadata.send(`Started playing: **${track.title}**`);
-    });
-
-    player.events.on(GuildQueueEvent.AudioTrackAdd, (queue, track) => {
+    player.events.on(GuildQueueEvent.AudioTrackAdd, async (queue, track) => {
         // Emitted when the player adds a single song to its queue
-        queue.metadata.send(`Track **${track.title}** queued`);
+        await queue.metadata.send(`Track **${track.title}** queued`);
     });
 
-    player.events.on(GuildQueueEvent.AudioTracksAdd, (queue, track) => {
+    player.events.on(GuildQueueEvent.AudioTracksAdd, async (queue, track) => {
         // Emitted when the player adds multiple songs to its queue
-        queue.metadata.send(`Multiple Track's queued`);
+        await queue.metadata.send(`Multiple Track's queued`);
     });
 
-    player.events.on(GuildQueueEvent.PlayerSkip, (queue, track) => {
+    player.events.on(GuildQueueEvent.PlayerSkip, async (queue, track) => {
         // Emitted when the audio player fails to load the stream for a song
-        queue.metadata.send(`Skipping **${track.title}** due to an issue!`);
+        await queue.metadata.send(`Skipping **${track.title}** due to an issue!`);
     });
 
-    player.events.on(GuildQueueEvent.Disconnect, (queue) => {
+    player.events.on(GuildQueueEvent.Disconnect, async (queue) => {
         // Emitted when the bot leaves the voice channel
-        queue.metadata.send('Looks like my job here is done, leaving now!');
+        await queue.metadata.send('Looks like my job here is done, leaving now!');
     });
 
-    player.events.on(GuildQueueEvent.EmptyChannel, (queue) => {
+    player.events.on(GuildQueueEvent.EmptyChannel, async (queue) => {
         // Emitted when the voice channel has been empty for the set threshold
         // Bot will automatically leave the voice channel with this event
-        queue.metadata.send(`Leaving because no vc activity for the past 5 minutes`);
+        await queue.metadata.send(`Leaving because no vc activity for the past 5 minutes`);
     });
 
-    player.events.on(GuildQueueEvent.EmptyQueue, (queue) => {
+    player.events.on(GuildQueueEvent.EmptyQueue, async (queue) => {
         // Emitted when the player queue has finished
-        queue.metadata.send('Queue finished!');
+        await queue.metadata.send('Queue finished!');
     });
 
-    player.on(GuildQueueEvent.Debug, async (message) => {
+    player.on(GuildQueueEvent.Debug, (message) => {
         // Emitted when the player sends debug info
         // Useful for seeing what dependencies, extractors, etc are loaded
         console.log(`General player debug event: ${message}`);
     });
 
-    player.events.on(GuildQueueEvent.Debug, async (queue, message) => {
+    player.events.on(GuildQueueEvent.Debug, (queue, message) => {
         // Emitted when the player queue sends debug info
         // Useful for seeing what state the current queue is at
         console.log(console.log(`[DEBUG ${queue.guild.id}] ${message}`));

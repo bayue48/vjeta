@@ -8,7 +8,6 @@ const previous: Command = {
     execute: async (message) => {
         const queue = useQueue();
         if (!queue) return message.reply('This server has no queue!');
-
         if (queue.tracks.size == 1) return message.reply('There not enough songs in the queue to shuffle!');
 
         const history = useHistory();

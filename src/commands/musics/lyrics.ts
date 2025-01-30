@@ -11,7 +11,6 @@ const lyrics: Command = {
         if (!args[1]) {
             const queue = useQueue()
             if (!queue) return message.reply('This server has no queue!')
-
             if (!queue.isPlaying()) return message.reply('No song is currently playing!')
 
             const artist = queue?.currentTrack?.author;
@@ -43,8 +42,6 @@ const lyrics: Command = {
             .setColor('Yellow');
 
         return message.reply({ embeds: [embed] });
-
-
     }
 }
 

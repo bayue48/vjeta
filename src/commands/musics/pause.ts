@@ -9,8 +9,6 @@ const pause: Command = {
         const queue = useQueue();
         if (!queue) return message.reply('This server has no queue!');
 
-        if (!queue.isPlaying()) return message.reply('No song is currently playing!');
-
         const timeline = useTimeline();
         if (!timeline) return message.reply('No song is currently playing!');
 
