@@ -5,6 +5,7 @@ import {
   getGuildOption,
   sendTimedMessage,
   getThemeColor,
+  embedBuilder,
 } from "../functions";
 import { BotEvent } from "../types";
 import mongoose from "mongoose";
@@ -24,10 +25,7 @@ const event: BotEvent = {
     // check bot mention
     const mention = new RegExp(`^<@!?${message.guild.members.me?.id}>( |)$`);
     if (message.content.match(mention)) {
-      const embed = new EmbedBuilder()
-        .setColor(getThemeColor('mainColor'))
-        .setDescription(`Hey My Prefix is: \`${prefix}\``)
-      return message.reply({ embeds: [embed] })
+      return message.reply(embedBuilder({description: `Hey My Prefix is: \`${prefix}\``}));
     }
 
     if (!message.content.startsWith(prefix)) return;
@@ -57,14 +55,14 @@ const event: BotEvent = {
     );
     if (neededPermissions !== null)
       return sendTimedMessage(
-        `❌ | **Ops! I need these permissions: ${neededPermissions.join(", ")} To be able to execute the command**`,
+        `❌ | **Ops! You need these permissions: ${neededPermissions.join(", ")} To be able to execute the command**`,
         message.channel,
         5000
       );
 
     let neededBotPermissions = checkBotPermissions(message, command.botPermissions ?? []);
     if (neededBotPermissions !== null) {
-      return message.reply({ content: `❌ | **Ops! I need these permissions: ${neededBotPermissions?.join(", ")} To be able to execute the command**` });;
+      return message.reply(embedBuilder({ description: `❌ | **Ops! I need these permissions: ${neededBotPermissions?.join(", ")} To be able to execute the command**` }));;
     }
 
     if (command.cooldowns && cooldown) {
@@ -98,14 +96,7 @@ const event: BotEvent = {
       player.context.provide(context, () => command.execute(message, args));
     } catch (e) {
       console.log(e)
-      return message.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setColor(getThemeColor('mainColor'))
-            .setTimestamp()
-            .setDescription(`❌ | **Ops! Something went wrong while executing the command**`),
-        ]
-      });
+      return message.reply(embedBuilder({ description: `❌ | **Ops! Something went wrong while executing the command**` }));
     }
   },
 };

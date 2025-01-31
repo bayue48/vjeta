@@ -1,6 +1,6 @@
 import { useQueue, useMainPlayer } from 'discord-player';
 import { Command } from '../../types';
-import { EmbedBuilder } from 'discord.js';
+import { constants, embedBuilder } from '../../functions';
 
 const lyrics: Command = {
     enable: true,
@@ -8,40 +8,78 @@ const lyrics: Command = {
     description: "Get lyrics of a song",
     execute: async (message, args) => {
         let query = "";
+        let link = "";
+        let thumbnail = "";
+
         if (!args[1]) {
             const queue = useQueue()
-            if (!queue) return message.reply('This server has no queue!')
-            if (!queue.isPlaying()) return message.reply('No song is currently playing!')
+            if (!queue) return message.reply(embedBuilder({
+                description: constants.noQueue
+            }));
+            if (!queue.isPlaying()) return message.reply(embedBuilder({
+                description: constants.noSong
+            }))
 
-            const artist = queue?.currentTrack?.author;
-            const track = queue?.currentTrack?.title;
-            query = `${artist} ${track}`
+            query = `${queue?.currentTrack?.author} ${queue?.currentTrack?.title}`
+            link = `${queue?.currentTrack?.url}`
+            thumbnail = `${queue?.currentTrack?.thumbnail}`
         } else {
             args.shift();
             query = args.join(' ');
         }
 
-        const player = useMainPlayer();
-        const lyrics = await player?.lyrics.search({
-            q: query,
-        });
+        const msg = await message.reply(embedBuilder({
+            description: `Please wait, im looking for the Lyrics, It can take \`few \` seconds.`
+        }));
 
-        if (!lyrics.length)
-            return message.reply('No lyrics found for this song!');
+        try {
+            const player = useMainPlayer();
+            const lyrics = await player?.lyrics.search({
+                q: query,
+            });
 
-        const trimmedLyrics = lyrics[0].plainLyrics.substring(0, 1997);
+            if (!lyrics.length)
+                return msg.edit(embedBuilder({
+                    description: 'No lyrics found for this song!'
+                }));
 
-        const embed = new EmbedBuilder()
-            .setTitle(lyrics[0].name)
-            .setAuthor({
-                name: lyrics[0].artistName,
-            })
-            .setDescription(
-                trimmedLyrics.length === 1997 ? `${trimmedLyrics}...` : trimmedLyrics,
-            )
-            .setColor('Yellow');
+            const result = lyrics[0].plainLyrics
 
-        return message.reply({ embeds: [embed] });
+            // if (result.length > 4095) {
+            //     msg.delete();
+            //     return msg.edit(embedBuilder({
+            //         description: 'Lyrics are too long to be returned as embed'
+            //     }));
+            // }
+
+            if (result.length < 4095) {
+                return msg.edit(embedBuilder({
+                    title: `${lyrics[0].name} - ${lyrics[0].artistName}`,
+                    description: result,
+                    url: link ? link : undefined,
+                    thumbnail: thumbnail ? thumbnail : undefined
+                }))
+            } else {
+                msg.edit(embedBuilder({
+                    title: `${lyrics[0].name} - ${lyrics[0].artistName}`,
+                    description: result.substring(0, 4095),
+                    url: link ? link : undefined,
+                    thumbnail: thumbnail ? thumbnail : undefined
+                }))
+
+                message.reply(embedBuilder({
+                    title: `${lyrics[0].name} - ${lyrics[0].artistName}`,
+                    description: result.substring(4095, result.length),
+                    url: link ? link : undefined,
+                    thumbnail: thumbnail ? thumbnail : undefined
+                }))
+            }
+        } catch (e) {
+            console.log(e)
+            return message.reply(embedBuilder({
+                description: constants.err
+            }));
+        }
     }
 }
 

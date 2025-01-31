@@ -1,5 +1,6 @@
 import { useMainPlayer, useQueue } from 'discord-player';
 import { Command } from '../../types';
+import { constants, embedBuilder } from '../../functions';
 
 const playNext: Command = {
     enable: true,
@@ -15,11 +16,17 @@ const playNext: Command = {
         console.log(query)
         try {
             const searchResult = await player.search(query);
-            if (!searchResult.tracks[0]) return message.reply('No results found!');
+            if (!searchResult.tracks[0]) return message.reply(embedBuilder({
+                description: 'No results found!'
+            }));
             queue?.insertTrack(searchResult.tracks[0], 1);
-            return message.reply(`**${searchResult.tracks[0].title}** enqueued!`);
+            return message.reply(embedBuilder({
+                description: `**${searchResult.tracks[0].title} - ${searchResult.tracks[0].author}** has been added to the queue!`
+            }));
         } catch (e) {
-            return message.reply(`Something went wrong: ${e}`);
+            return message.reply(embedBuilder({
+                description: constants.err
+            }));
         }
     }
 }

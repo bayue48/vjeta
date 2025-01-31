@@ -1,5 +1,8 @@
-import { PermissionFlagsBits } from "discord.js";
+import { PermissionsBitField } from "discord.js";
 import { Command } from "../../types";
+import { embedBuilder } from "../../functions";
+
+const { Flags } = PermissionsBitField
 
 const greet: Command = {
   name: "greet",
@@ -7,13 +10,12 @@ const greet: Command = {
   description: "Greet someone",
   enable: true,
   cooldowns: 10,
-  permissions: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages],
+  permissions: [Flags.ViewChannel, Flags.SendMessages],
   execute: (message) => {
     let toGreet = message.mentions.members?.first();
-    message.reply(
-      `Hello there ${toGreet ? toGreet.user.username : message.member?.user.username
-      }!`
-    );
+    message.reply(embedBuilder({
+      description: `Hello there ${toGreet ? toGreet.user.username : message.member?.user.username}!`
+    }));
   },
 };
 

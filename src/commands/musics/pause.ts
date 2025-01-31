@@ -1,5 +1,6 @@
 import { useQueue, useTimeline } from 'discord-player';
 import { Command } from '../../types';
+import { constants, embedBuilder } from '../../functions';
 
 const pause: Command = {
     enable: true,
@@ -7,15 +8,21 @@ const pause: Command = {
     description: "Pause the music",
     execute: async (message) => {
         const queue = useQueue();
-        if (!queue) return message.reply('This server has no queue!');
+        if (!queue) return message.reply(embedBuilder({
+            description: constants.noQueue
+        }));
 
         const timeline = useTimeline();
-        if (!timeline) return message.reply('No song is currently playing!');
+        if (!timeline) return message.reply(embedBuilder({
+            description: constants.noSong
+        }));
 
         const wasPaused = timeline.paused;
         wasPaused ? timeline.resume() : timeline.pause();
 
-        return message.reply(`**${wasPaused ? 'Resumed' : 'Paused'}** the music!`);
+        return message.reply(embedBuilder({
+            description: `**${wasPaused ? 'Resumed' : 'Paused'}** the music!`
+        }));
     }
 }
 

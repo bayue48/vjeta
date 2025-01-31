@@ -1,5 +1,6 @@
 import { useQueue, useHistory } from 'discord-player';
-import { Command } from '../../types';
+import { Command, EmbedData } from '../../types';
+import { constants, embedBuilder } from '../../functions';
 
 const loop: Command = {
     enable: true,
@@ -7,7 +8,9 @@ const loop: Command = {
     description: "Set loop mode",
     execute: async (message) => {
         const queue = useQueue();
-        if (!queue) return message.reply('This server has no queue!');
+        if (!queue) return message.reply(embedBuilder({
+            description: constants.noQueue,
+        }));
 
         // Mode	    Value	Description
         // Off	    0	    Default mode with no loop active
@@ -18,7 +21,9 @@ const loop: Command = {
         const loopMode = queue.repeatMode;
         loopMode === 0 ? queue.setRepeatMode(1) : loopMode === 1 ? queue.setRepeatMode(2) : loopMode === 2 ? queue.setRepeatMode(3) : queue.setRepeatMode(0);
 
-        return message.reply(`Loop mode is ${loopMode}`);
+        return message.reply(embedBuilder({
+            description: `Loop mode is ${loopMode}`,
+        }));
     }
 }
 

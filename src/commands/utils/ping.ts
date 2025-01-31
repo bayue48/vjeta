@@ -1,6 +1,8 @@
-import { EmbedBuilder, PermissionFlagsBits } from "discord.js";
-import { getThemeColor } from "../../functions";
+import { EmbedBuilder, PermissionsBitField } from "discord.js";
+import { embedBuilder, getThemeColor } from "../../functions";
 import { Command } from "../../types";
+
+const { Flags } = PermissionsBitField
 
 const ping: Command = {
   enable: true,
@@ -11,19 +13,12 @@ const ping: Command = {
     if (ping > 500) state = "🔴";
     else if (ping > 200) state = "🟡";
     else state = "🟢";
-
-    message.reply({
-      embeds: [
-        new EmbedBuilder()
-          .setColor(getThemeColor('mainColor'))
-          .setTimestamp()
-          .addFields(
-            { name: "🏓 | Pong!", value: `\`\`\`yml\n${state} | ${ping}ms\`\`\`` },
-          )
-      ]
-    });
+    message.reply(embedBuilder({
+      title: "🏓 | Pong!",
+      description: `\`\`\`${state} | ${ping}ms\`\`\``
+    }));
   },
-  permissions: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages],
+  permissions: [Flags.ViewChannel, Flags.SendMessages],
 };
 
 export default ping;

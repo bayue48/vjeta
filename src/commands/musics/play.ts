@@ -1,6 +1,7 @@
 import { useMainPlayer } from 'discord-player';
 import { PermissionsBitField } from 'discord.js';
 import { Command } from '../../types';
+import { constants, embedBuilder } from '../../functions';
 
 const { Flags } = PermissionsBitField
 
@@ -12,11 +13,14 @@ const play: Command = {
     execute: async (message, args) => {
         const player = useMainPlayer();
         const channel = message.member?.voice.channel;
-        if (!channel) return message.reply('You need to be in a voice channel to use this command!');
+        if (!channel) return message.reply(embedBuilder({
+            description: 'You must be in a voice channel to use this command!'
+        }));
 
-        // Check if the bot is already playing in a different voice channel
         if (player.nodes.get(message.guild?.id!)) {
-            return message.reply('The bot is already playing music in another voice channel!');
+            return message.reply(embedBuilder({
+                description: 'The bot is already playing music in another voice channel!'
+            }));
         }
 
         args.shift();
@@ -27,15 +31,17 @@ const play: Command = {
                 nodeOptions: {
                     metadata: message.channel,
                     leaveOnEnd: false,
-                    leaveOnEmpty: true, 
-                    leaveOnEmptyCooldown: 300000, 
+                    leaveOnEmpty: true,
+                    leaveOnEmptyCooldown: 300000,
                 },
             });
 
-            return message.reply(`**${track.title}** has been added to the queue!`);
+            return message.reply(embedBuilder({
+                description: `**${track.title} - ${track.author}** has been added to the queue!`
+            }));
         } catch (e) {
             console.log(e)
-            return message.reply(`Something went wrong: ${e}`);
+            return message.reply(constants.err);
         }
     }
 }

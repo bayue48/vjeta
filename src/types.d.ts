@@ -22,6 +22,7 @@ export interface Command {
   name: string;
   aliases?: Array<string>;
   description?: string;
+  usage?: string;
   enable: boolean;
   cooldowns?: number;
   permissions?: Array<PermissionResolvable>;
@@ -45,6 +46,21 @@ export interface BotEvent {
   enable: boolean;
   once?: boolean | false;
   execute: (...args) => void;
+}
+
+export interface EmbedData {
+  title?: string;
+  description?: string;
+  url?: string;
+  thumbnail?: string;
+  color?: number;
+  fields?: field[];
+}
+
+interface field {
+  name: string;
+  value: string;
+  inline?: boolean | false;
 }
 
 declare global {

@@ -1,5 +1,6 @@
 import { useQueue } from 'discord-player';
 import { Command } from '../../types';
+import { constants, embedBuilder } from '../../functions';
 
 const queue: Command = {
     enable: true,
@@ -7,7 +8,9 @@ const queue: Command = {
     description: "Show queue",
     execute: async (message, args) => {
         const queue = useQueue();
-        if (!queue) return message.reply('This server has no queue!');
+        if (!queue) return message.reply(embedBuilder({
+            description: constants.noQueue
+        }));
 
         const currentTrack = queue.currentTrack
         const upcomingTracks = queue.tracks
@@ -22,7 +25,9 @@ const queue: Command = {
             ),
         ].join('\n');
 
-        return message.reply(build);
+        return message.reply(embedBuilder({
+            description: build
+        }));
     }
 }
 

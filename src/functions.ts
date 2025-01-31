@@ -1,5 +1,7 @@
 import chalk from "chalk"
 import {
+    Embed,
+    EmbedBuilder,
     Guild,
     GuildMember,
     PermissionFlagsBits,
@@ -7,7 +9,7 @@ import {
     TextChannel,
 } from "discord.js"
 import GuildDB from "./schemas/guild"
-import { GuildOption } from "./types"
+import { GuildOption, EmbedData } from "./types"
 import mongoose from "mongoose";
 
 type colorType = "mainColor" | "secColor" | "errorColor"
@@ -50,7 +52,7 @@ export const checkBotPermissions = (message: any, permissions: PermissionResolva
 }
 
 export const sendTimedMessage = (message: string, channel: TextChannel, duration: number) => {
-    channel.send(message)
+    channel.send(embedBuilder({ description: message }))
         .then(m => setTimeout(async () => (await channel.messages.fetch(m)).delete(), duration))
     return
 }
@@ -82,3 +84,21 @@ export const fileType = (env: string) => {
     if (env === "dev") return ".ts"
     else return ".js"
 };
+
+export const embedBuilder = (embed: EmbedData) => {
+    const builder = new EmbedBuilder()
+    if (embed.title) builder.setTitle(embed.title)
+    if (embed.description) builder.setDescription(embed.description)
+    if (embed.url) builder.setURL(embed.url)
+    if (embed.thumbnail) builder.setThumbnail(embed.thumbnail)
+    embed.color ? builder.setColor(embed.color) : builder.setColor(getThemeColor('mainColor'))
+    if (embed.fields) builder.addFields(embed.fields)
+    builder.setTimestamp()
+    return { embeds: [builder] }
+}
+
+export const constants = {
+    err: 'Something went wrong...',
+    noQueue: 'This server has no queue!',
+    noSong: 'No song is currently playing!'
+}

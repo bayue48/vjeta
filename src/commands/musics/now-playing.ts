@@ -1,5 +1,6 @@
 import { usePlayer, useQueue } from 'discord-player';
 import { Command } from '../../types';
+import { constants, embedBuilder } from '../../functions';
 
 const nowPlaying: Command = {
     enable: true,
@@ -7,16 +8,45 @@ const nowPlaying: Command = {
     description: "Show now playing song",
     execute: async (message) => {
         const queue = useQueue();
-        if (!queue) return message.reply('This server has no queue!');
+        if (!queue) return message.reply(embedBuilder({
+            description: constants.noQueue
+        }));
 
         const track = queue?.currentTrack;
-        if (!track) return message.reply('No song is currently playing!');
+        if (!track) return message.reply(embedBuilder({
+            description: constants.noSong
+        }));
 
         const player = usePlayer();
         const progressBar = player?.createProgressBar();
         const timestamp = player?.getTimestamp();
-
-        return message.reply(`Now playing: **${track?.title}** \n ${progressBar} \n Progress: ${timestamp?.progress}%`);
+        // `Now playing: **${track?.title}** \n ${progressBar} \n Progress: ${timestamp?.progress}%`
+        return message.reply(embedBuilder({
+            thumbnail: track.thumbnail,
+            url: track.url,
+            fields: [
+                {
+                    name: 'Author',
+                    value: track.author,
+                    inline: true,
+                },
+                {
+                    name: 'Title',
+                    value: track.title,
+                    inline: true,
+                },
+                {
+                    name: 'Duration',
+                    value: `${timestamp}`,
+                    inline: true,
+                },
+                {
+                    name: 'Progress',
+                    value: `${progressBar}`,
+                    inline: true,
+                },
+            ],
+        }));
     }
 }
 
