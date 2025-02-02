@@ -6,8 +6,8 @@ import { DefaultExtractors } from "@discord-player/extractor";
 module.exports = (client: Client) => {
     const player = new Player(client);
 
-    player.extractors.register(YoutubeiExtractor, {});
     player.extractors.loadMulti(DefaultExtractors);
+    player.extractors.register(YoutubeiExtractor, {});
 
     console.log("deep || ", player.scanDeps());
 

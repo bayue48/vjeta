@@ -16,13 +16,13 @@ const queue: Command = {
         const upcomingTracks = queue.tracks
 
         const build = [
-            `**Queue Size:** ${queue.tracks.size}`,
             `**Now Playing:** ${currentTrack?.title} - ${currentTrack?.author}`,
             '',
-            '**Upcoming Tracks:**',
+            queue.tracks.size ? '**Upcoming Tracks:**' : 'There are no upcoming tracks',
             ...upcomingTracks.map(
                 (track, index) => `${index + 1}. ${track.title} - ${track.author}`,
             ),
+            queue.tracks.size ? `**Queue Size:** ${queue.tracks.size}` : '**JETAAA**',
         ].join('\n');
 
         return message.reply(embedBuilder({
