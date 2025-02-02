@@ -1,6 +1,6 @@
 import { useMainPlayer, useQueue } from 'discord-player';
 import { Command } from '../../types';
-import { constants, embedBuilder } from '../../functions';
+import { constants, embedBuilder } from '../../helpers/functions';
 
 const playNext: Command = {
     enable: true,

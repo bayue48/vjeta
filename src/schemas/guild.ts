@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IGuild } from "../types";
+import { IGuild, IQueue } from "../types";
 
 const GuildSchema = new Schema<IGuild>({
     guildID: { required: true, type: String },
@@ -8,6 +8,12 @@ const GuildSchema = new Schema<IGuild>({
     }
 })
 
-const GuildModel = model("guild", GuildSchema)
+const QueueSchema = new Schema<IQueue>({
+    guildID: { required: true, type: String },
+    queueName: { required: true, type: String },
+    queue: { required: true, type: Array }
+})
 
-export default GuildModel;
+export const GuildModel = model("guild", GuildSchema)
+export const QueueModel = model("queue", QueueSchema)
+

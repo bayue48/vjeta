@@ -2,11 +2,10 @@ import { ChannelType, Message, EmbedBuilder, Events } from "discord.js";
 import {
   checkBotPermissions,
   checkPermissions,
-  getGuildOption,
   sendTimedMessage,
-  getThemeColor,
   embedBuilder,
-} from "../functions";
+} from "../helpers/functions";
+import { getPrefix } from "../helpers/db";
 import { BotEvent } from "../types";
 import mongoose from "mongoose";
 import { useMainPlayer } from "discord-player";
@@ -19,13 +18,13 @@ const event: BotEvent = {
     if (!message.guild) return;
     let prefix = process.env.PREFIX;
     if (mongoose.connection.readyState === 1) {
-      let guildPrefix = await getGuildOption(message.guild, "prefix");
+      let guildPrefix = await getPrefix(message.guild, "prefix");
       if (guildPrefix) prefix = guildPrefix;
     }
     // check bot mention
     const mention = new RegExp(`^<@!?${message.guild.members.me?.id}>( |)$`);
     if (message.content.match(mention)) {
-      return message.reply(embedBuilder({description: `Hey My Prefix is: \`${prefix}\``}));
+      return message.reply(embedBuilder({ description: `Hey My Prefix is: \`${prefix}\`` }));
     }
 
     if (!message.content.startsWith(prefix)) return;

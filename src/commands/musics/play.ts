@@ -1,7 +1,7 @@
 import { useMainPlayer } from 'discord-player';
 import { PermissionsBitField } from 'discord.js';
 import { Command } from '../../types';
-import { constants, embedBuilder } from '../../functions';
+import { constants, embedBuilder } from '../../helpers/functions';
 
 const { Flags } = PermissionsBitField
 

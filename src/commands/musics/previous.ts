@@ -1,6 +1,6 @@
 import { useQueue, useHistory } from 'discord-player';
 import { Command } from '../../types';
-import { constants, embedBuilder } from '../../functions';
+import { constants, embedBuilder } from '../../helpers/functions';
 
 const previous: Command = {
     enable: true,

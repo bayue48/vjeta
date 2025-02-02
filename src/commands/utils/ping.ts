@@ -1,5 +1,5 @@
 import { EmbedBuilder, PermissionsBitField } from "discord.js";
-import { embedBuilder, getThemeColor } from "../../functions";
+import { embedBuilder, getThemeColor } from "../../helpers/functions";
 import { Command } from "../../types";
 
 const { Flags } = PermissionsBitField

@@ -4,7 +4,7 @@ import {
   TextChannel,
   EmbedBuilder,
 } from "discord.js";
-import { getThemeColor } from "../functions";
+import { getThemeColor } from "../helpers/functions";
 import { SlashCommand } from "../types";
 
 const command: SlashCommand = {

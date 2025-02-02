@@ -1,5 +1,5 @@
 import { Interaction, EmbedBuilder, Events } from "discord.js";
-import { checkBotPermissions, getThemeColor } from "../functions";
+import { checkBotPermissions, getThemeColor } from "../helpers/functions";
 import { BotEvent } from "../types";
 
 const event: BotEvent = {

@@ -1,16 +1,12 @@
 import chalk from "chalk"
 import {
-    Embed,
     EmbedBuilder,
-    Guild,
     GuildMember,
     PermissionFlagsBits,
     PermissionResolvable,
     TextChannel,
 } from "discord.js"
-import GuildDB from "./schemas/guild"
-import { GuildOption, EmbedData } from "./types"
-import mongoose from "mongoose";
+import { EmbedData } from "../types"
 
 type colorType = "mainColor" | "secColor" | "errorColor"
 const themeColors = {
@@ -55,29 +51,6 @@ export const sendTimedMessage = (message: string, channel: TextChannel, duration
     channel.send(embedBuilder({ description: message }))
         .then(m => setTimeout(async () => (await channel.messages.fetch(m)).delete(), duration))
     return
-}
-
-export const getGuildOption = async (guild: Guild, option: GuildOption) => {
-    if (mongoose.connection.readyState === 0) throw new Error("[❌] Database not connected.")
-    let foundGuild = await GuildDB.findOne({ guildID: guild.id })
-    if (!foundGuild) return null;
-    return foundGuild.options[option]
-}
-
-export const setGuildOption = async (guild: Guild, option: GuildOption, value: any) => {
-    if (mongoose.connection.readyState === 0) throw new Error("[❌] Database not connected.")
-    let foundGuild = await GuildDB.findOne({ guildID: guild.id })
-    if (!foundGuild) {
-        let newGuild = new GuildDB({
-            guildID: guild.id,
-            options: { [option]: value },
-            joinedAt: Date.now(),
-        });
-        newGuild.save()
-        return null;
-    }
-    foundGuild.options[option] = value
-    foundGuild.save()
 }
 
 export const fileType = (env: string) => {

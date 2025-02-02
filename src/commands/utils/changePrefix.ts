@@ -1,5 +1,6 @@
 import { PermissionsBitField } from "discord.js";
-import { embedBuilder, getThemeColor, setGuildOption } from "../../functions";
+import { embedBuilder } from "../../helpers/functions";
+import { setPrefix } from "../../helpers/db";
 import { Command } from "../../types";
 
 const { Flags } = PermissionsBitField
@@ -13,7 +14,7 @@ const command: Command = {
             description: 'Please provide a prefix!'
         }));
         if (!message.guild) return;
-        setGuildOption(message.guild, "prefix", prefix);
+        setPrefix(message.guild, "prefix", prefix);
         message.reply(embedBuilder({
             description: `Prefix Successfully Changed!\n**New Prefix: **\`${prefix}\``
         }));

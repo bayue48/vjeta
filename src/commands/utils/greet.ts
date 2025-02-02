@@ -1,6 +1,6 @@
 import { PermissionsBitField } from "discord.js";
 import { Command } from "../../types";
-import { embedBuilder } from "../../functions";
+import { embedBuilder } from "../../helpers/functions";
 
 const { Flags } = PermissionsBitField
 

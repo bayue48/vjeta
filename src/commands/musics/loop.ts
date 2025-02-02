@@ -1,6 +1,6 @@
 import { useQueue, useHistory } from 'discord-player';
 import { Command, EmbedData } from '../../types';
-import { constants, embedBuilder } from '../../functions';
+import { constants, embedBuilder } from '../../helpers/functions';
 
 const loop: Command = {
     enable: true,

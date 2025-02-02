@@ -1,6 +1,6 @@
 import { Client, Events } from "discord.js";
 import { BotEvent } from "../types";
-import { color } from "../functions";
+import { color } from "../helpers/functions";
 
 const event: BotEvent = {
   enable: true,

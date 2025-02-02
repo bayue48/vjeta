@@ -41,6 +41,13 @@ export interface IGuild extends mongoose.Document {
 }
 
 export type GuildOption = keyof GuildOptions;
+
+export interface IQueue extends mongoose.Document {
+  guildID: string;
+  queueName: string;
+  queue: Array;
+}
+
 export interface BotEvent {
   name: string;
   enable: boolean;

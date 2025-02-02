@@ -1,6 +1,6 @@
 import { useQueue, useMainPlayer } from 'discord-player';
 import { Command } from '../../types';
-import { constants, embedBuilder } from '../../functions';
+import { constants, embedBuilder } from '../../helpers/functions';
 
 const lyrics: Command = {
     enable: true,
@@ -20,7 +20,7 @@ const lyrics: Command = {
                 description: constants.noSong
             }))
 
-            query = `${queue?.currentTrack?.author} ${queue?.currentTrack?.title}`
+            query = `${queue?.currentTrack?.title}`
             link = `${queue?.currentTrack?.url}`
             thumbnail = `${queue?.currentTrack?.thumbnail}`
         } else {
