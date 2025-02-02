@@ -17,11 +17,11 @@ const play: Command = {
             description: 'You must be in a voice channel to use this command!'
         }));
 
-        if (player.nodes.get(message.guild?.id!)) {
-            return message.reply(embedBuilder({
-                description: 'The bot is already playing music in another voice channel!'
-            }));
-        }
+        // if (player.nodes.get(message.guild?.id!)) {
+        //     return message.reply(embedBuilder({
+        //         description: 'The bot is already playing music in another voice channel!'
+        //     }));
+        // }
 
         args.shift();
         const query = args.join(' ');
