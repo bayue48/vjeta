@@ -23,7 +23,7 @@ const getQueue: Command = {
         const serializedTrack = await gq(message.guild, queueName);
 
         const player = useMainPlayer()
-        deserialize(player, serializedTrack.queue)
+        deserialize(player, serializedTrack)
 
         return message.reply(embedBuilder({
             description: `**${queueName}** has been added to the queue!`

@@ -20,7 +20,7 @@ const lyrics: Command = {
                 description: constants.noSong
             }))
 
-            query = `${queue?.currentTrack?.title}`
+            query = `${queue?.currentTrack?.title} - ${queue?.currentTrack?.author}`
             link = `${queue?.currentTrack?.url}`
             thumbnail = `${queue?.currentTrack?.thumbnail}`
         } else {

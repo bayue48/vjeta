@@ -20,7 +20,7 @@ const nowPlaying: Command = {
         const player = usePlayer();
         const progressBar = player?.createProgressBar();
         const timestamp = player?.getTimestamp();
-        // `Now playing: **${track?.title}** \n ${progressBar} \n Progress: ${timestamp?.progress}%`
+  
         return message.reply(embedBuilder({
             thumbnail: track.thumbnail,
             url: track.url,
@@ -37,7 +37,7 @@ const nowPlaying: Command = {
                 },
                 {
                     name: 'Duration',
-                    value: `${timestamp}`,
+                    value: `${timestamp?.total}`,
                     inline: true,
                 },
                 {
