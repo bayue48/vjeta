@@ -2,6 +2,7 @@ import { Guild } from "discord.js";
 import { GuildModel, QueueModel } from "../schemas/guild"
 import { GuildOption } from "../types"
 import mongoose from "mongoose";
+import { SerializedTrack } from "discord-player";
 
 
 export const getPrefix = async (guild: Guild, option: GuildOption) => {
@@ -27,7 +28,7 @@ export const setPrefix = async (guild: Guild, option: GuildOption, value: any) =
     foundGuild.save()
 }
 
-export const saveQueue = async (guild: Guild, queueName: string, queue: Array<JSON>) => {
+export const saveQueue = async (guild: Guild, queueName: string, queue: Array<SerializedTrack>) => {
     if (mongoose.connection.readyState === 0) throw new Error("[❌] Database not connected.")
     let newQueue = new QueueModel({
         guildID: guild.id,

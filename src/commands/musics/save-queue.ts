@@ -13,7 +13,7 @@ const saveQueue: Command = {
             description: constants.noQueue
         }));
 
-        if (args[1]) return message.reply(embedBuilder({
+        if (!args[1]) return message.reply(embedBuilder({
             description: 'Please provide a name for the queue!'
         }))
 

@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { IGuild, IQueue } from "../types";
+import { SerializedTrack } from "discord-player";
 
 const GuildSchema = new Schema<IGuild>({
     guildID: { required: true, type: String },
@@ -11,7 +12,7 @@ const GuildSchema = new Schema<IGuild>({
 const QueueSchema = new Schema<IQueue>({
     guildID: { required: true, type: String },
     queueName: { required: true, type: String },
-    queue: { required: true, type: Array }
+    queue: { required: true, type: Array<SerializedTrack> }
 })
 
 export const GuildModel = model("guild", GuildSchema)
