@@ -1,13 +1,15 @@
 import { Client } from "discord.js";
 import { Player, GuildQueueEvent } from "discord-player";
 import { YoutubeiExtractor } from "discord-player-youtubei"
-import { DefaultExtractors } from "@discord-player/extractor";
+import { SoundCloudExtractor, SpotifyExtractor } from "@discord-player/extractor";
 
-module.exports = (client: Client) => {
+module.exports = async (client: Client) => {
     const player = new Player(client);
 
-    player.extractors.loadMulti(DefaultExtractors);
-    player.extractors.register(YoutubeiExtractor, {});
+    // await player.extractors.loadMulti(DefaultExtractors);
+    await player.extractors.register(YoutubeiExtractor, { cookie: process.env.YOUTUBE_COOKIE });
+    await player.extractors.register(SpotifyExtractor, {});
+    await player.extractors.register(SoundCloudExtractor, {});
 
     console.log("deep || ", player.scanDeps());
 
