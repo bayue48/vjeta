@@ -5,6 +5,8 @@ import { constants, embedBuilder } from '../../helpers/functions';
 const loop: Command = {
     enable: true,
     name: "loop",
+    aliases: ["repeat"],
+    usage: `loop`,
     description: "Set loop mode",
     execute: async (message) => {
         const queue = useQueue();

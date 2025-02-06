@@ -3069,6 +3069,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tts-extractor@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "tts-extractor@npm:1.0.4"
+  checksum: 10c0/39dd9c4476423f54dce136bf82e5f65c309abaaf0cbbba28910108346aa975e56bde13d33966a1912628163d2cb4b438fc49c8d233ef020c9300a211c73531a7
+  languageName: node
+  linkType: hard
+
 "typedarray@npm:^0.0.6":
   version: 0.0.6
   resolution: "typedarray@npm:0.0.6"
@@ -3197,6 +3204,7 @@ __metadata:
     mongoose: "npm:^8.9.3"
     nodemon: "npm:^3.1.9"
     ts-node: "npm:^10.9.2"
+    tts-extractor: "npm:^1.0.4"
     typescript: "npm:^5.7.2"
   languageName: unknown
   linkType: soft

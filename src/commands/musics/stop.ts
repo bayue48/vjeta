@@ -2,10 +2,12 @@ import { useQueue } from 'discord-player';
 import { Command } from '../../types';
 import { constants, embedBuilder } from '../../helpers/functions';
 
-const previous: Command = {
+const stop: Command = {
     enable: true,
-    name: "previous",
-    description: "Play previous song",
+    name: "stop",
+    aliases: ["leave"],
+    usage: `stop`,
+    description: "Stop the music",
     execute: async (message) => {
         const queue = useQueue();
         if (!queue) return message.reply(embedBuilder({
@@ -19,4 +21,4 @@ const previous: Command = {
     }
 }
 
-export default previous;
+export default stop;

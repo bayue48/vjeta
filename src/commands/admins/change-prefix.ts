@@ -3,11 +3,13 @@ import { embedBuilder } from "../../helpers/functions";
 import { setPrefix } from "../../helpers/db";
 import { Command } from "../../types";
 
-const { Flags } = PermissionsBitField
-
-const command: Command = {
-    enable: true,
+const prefix: Command = {
     name: "changePrefix",
+    aliases: ["cp", "prefix"],
+    description: "Change the prefix",
+    usage: `changePrefix <prefix>`,
+    enable: true,
+    permissions: [PermissionsBitField.Flags.Administrator],
     execute: (message, args) => {
         let prefix = args[1];
         if (!prefix) return message.reply(embedBuilder({
@@ -19,8 +21,6 @@ const command: Command = {
             description: `Prefix Successfully Changed!\n**New Prefix: **\`${prefix}\``
         }));
     },
-    permissions: [Flags.Administrator],
-    aliases: [],
 };
 
-export default command;
+export default prefix;

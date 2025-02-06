@@ -1,7 +1,7 @@
+import mongoose from "mongoose";
 import { Guild } from "discord.js";
 import { GuildModel, QueueModel } from "../schemas/guild"
 import { GuildOption } from "../types"
-import mongoose from "mongoose";
 import { SerializedTrack } from "discord-player";
 
 

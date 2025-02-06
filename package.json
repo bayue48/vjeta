@@ -18,7 +18,8 @@
     "discord-player-youtubei": "^1.4.2",
     "discord.js": "^14.17.2",
     "dotenv": "^16.4.7",
-    "mongoose": "^8.9.3"
+    "mongoose": "^8.9.3",
+    "tts-extractor": "^1.0.4"
   },
   "scripts": {
     "start": "ts-node src/index.ts",

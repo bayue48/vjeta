@@ -5,7 +5,9 @@ import { constants, embedBuilder } from '../../helpers/functions';
 const pause: Command = {
     enable: true,
     name: "pause",
-    description: "Pause the music",
+    aliases: ["ps"],
+    usage: `pause`,
+    description: "Pause the music, type again to resume",
     execute: async (message) => {
         const queue = useQueue();
         if (!queue) return message.reply(embedBuilder({

@@ -81,6 +81,8 @@ declare global {
       MONGO_DATABASE_NAME: string;
       ENV: string;
       YOUTUBE_COOKIE: string;
+      SPOTIFY_ID: string;
+      SPOTIFY_SECRET: string;
     }
   }
 }

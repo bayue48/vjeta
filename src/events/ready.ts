@@ -2,7 +2,7 @@ import { Client, Events } from "discord.js";
 import { BotEvent } from "../types";
 import { color } from "../helpers/functions";
 
-const event: BotEvent = {
+const ready: BotEvent = {
   enable: true,
   name: Events.ClientReady,
   once: true,
@@ -13,4 +13,4 @@ const event: BotEvent = {
   },
 };
 
-export default event;
+export default ready;

@@ -5,6 +5,8 @@ import { constants, embedBuilder } from '../../helpers/functions';
 const skip: Command = {
     enable: true,
     name: "skip",
+    aliases: ["s"],
+    usage: `skip`,
     description: "Skip the current song",
     execute: async (message) => {
         const queue = useQueue();

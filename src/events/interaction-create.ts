@@ -2,7 +2,7 @@ import { Interaction, EmbedBuilder, Events } from "discord.js";
 import { checkBotPermissions, getThemeColor } from "../helpers/functions";
 import { BotEvent } from "../types";
 
-const event: BotEvent = {
+const interaction: BotEvent = {
   enable: true,
   name: Events.InteractionCreate,
   execute: (interaction: Interaction) => {
@@ -78,4 +78,4 @@ const event: BotEvent = {
   },
 };
 
-export default event;
+export default interaction;

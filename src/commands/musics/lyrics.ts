@@ -5,6 +5,8 @@ import { constants, embedBuilder } from '../../helpers/functions';
 const lyrics: Command = {
     enable: true,
     name: "lyrics",
+    aliases: ["ly"],
+    usage: `lyrics <song name>`,
     description: "Get lyrics of a song",
     execute: async (message, args) => {
         let query = "";
@@ -20,7 +22,7 @@ const lyrics: Command = {
                 description: constants.noSong
             }))
 
-            query = `${queue?.currentTrack?.title} - ${queue?.currentTrack?.author}`
+            query = `${queue?.currentTrack?.title}`
             link = `${queue?.currentTrack?.url}`
             thumbnail = `${queue?.currentTrack?.thumbnail}`
         } else {

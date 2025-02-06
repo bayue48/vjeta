@@ -10,7 +10,7 @@ import { BotEvent } from "../types";
 import mongoose from "mongoose";
 import { useMainPlayer } from "discord-player";
 
-const event: BotEvent = {
+const message: BotEvent = {
   enable: true,
   name: Events.MessageCreate,
   execute: async (message: Message) => {
@@ -100,4 +100,4 @@ const event: BotEvent = {
   },
 };
 
-export default event;
+export default message;

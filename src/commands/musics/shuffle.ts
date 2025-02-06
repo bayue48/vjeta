@@ -5,6 +5,8 @@ import { constants, embedBuilder } from '../../helpers/functions';
 const shuffle: Command = {
     enable: true,
     name: "shuffle",
+    aliases: ["sh"],
+    usage: `shuffle`,
     description: "Shuffle the queue",
     execute: async (message) => {
         const queue = useQueue();

@@ -6,7 +6,9 @@ import { getQueue as gq } from "../../helpers/db";
 const getQueue: Command = {
     enable: true,
     name: "get-queue",
-    description: "get queue",
+    aliases: ["gq"],
+    usage: `get-queue <name>`,
+    description: "Get a queue",
     execute: async (message, args) => {
         const channel = message.member?.voice.channel;
         if (!channel) return message.reply(embedBuilder({

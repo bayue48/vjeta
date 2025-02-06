@@ -6,7 +6,9 @@ import { saveQueue as sq } from "../../helpers/db";
 const saveQueue: Command = {
     enable: true,
     name: "save-queue",
-    description: "save queue",
+    aliases: ["sq"],
+    usage: `save-queue <name>`,
+    description: "Save a queue",
     execute: async (message, args) => {
         const queue = useQueue();
         if (!queue) return message.reply(embedBuilder({

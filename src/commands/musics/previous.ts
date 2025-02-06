@@ -5,6 +5,8 @@ import { constants, embedBuilder } from '../../helpers/functions';
 const previous: Command = {
     enable: true,
     name: "previous",
+    aliases: ["prev"],
+    usage: `previous`,
     description: "Play previous song",
     execute: async (message) => {
         const queue = useQueue();

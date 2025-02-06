@@ -8,6 +8,8 @@ const { Flags } = PermissionsBitField
 const play: Command = {
     enable: true,
     name: "play",
+    aliases: ["p"],
+    usage: `play <song name>`,
     description: "Play a song",
     permissions: [Flags.SendMessages, Flags.Speak],
     execute: async (message, args) => {
@@ -37,7 +39,7 @@ const play: Command = {
             });
 
             return message.reply(embedBuilder({
-                description: `**${track.title} - ${track.author}** has been added to the queue!`
+                description: `**${track.title}** has been added to the queue!`
             }));
         } catch (e) {
             console.log(e)

@@ -1,13 +1,13 @@
-import { EmbedBuilder, PermissionsBitField } from "discord.js";
-import { embedBuilder, getThemeColor } from "../../helpers/functions";
+import { embedBuilder } from "../../helpers/functions";
 import { Command } from "../../types";
-
-const { Flags } = PermissionsBitField
 
 const ping: Command = {
   enable: true,
   name: "ping",
-  execute: async (message, args) => {
+  aliases: ["pong"],
+  usage: `ping`,
+  description: "Check the bot's ping",
+  execute: async (message) => {
     const ping = message.client.ws.ping;
     let state;
     if (ping > 500) state = "🔴";
@@ -18,7 +18,6 @@ const ping: Command = {
       description: `\`\`\`${state} | ${ping}ms\`\`\``
     }));
   },
-  permissions: [Flags.ViewChannel, Flags.SendMessages],
 };
 
 export default ping;

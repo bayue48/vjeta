@@ -5,6 +5,8 @@ import { constants, embedBuilder } from '../../helpers/functions';
 const nowPlaying: Command = {
     enable: true,
     name: "now-playing",
+    aliases: ["np"],
+    usage: `now-playing`,
     description: "Show now playing song",
     execute: async (message) => {
         const queue = useQueue();

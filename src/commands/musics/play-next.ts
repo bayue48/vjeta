@@ -5,6 +5,8 @@ import { constants, embedBuilder } from '../../helpers/functions';
 const playNext: Command = {
     enable: true,
     name: "play-next",
+    aliases: ["pn"],
+    usage: `play-next <song name>`,
     description: "Play after current song",
     execute: async (message, args) => {
         const player = useMainPlayer();
@@ -21,7 +23,7 @@ const playNext: Command = {
             }));
             queue?.insertTrack(searchResult.tracks[0], 1);
             return message.reply(embedBuilder({
-                description: `**${searchResult.tracks[0].title} - ${searchResult.tracks[0].author}** has been added to the queue!`
+                description: `**${searchResult.tracks[0].title}** has been added to the queue!`
             }));
         } catch (e) {
             return message.reply(embedBuilder({
